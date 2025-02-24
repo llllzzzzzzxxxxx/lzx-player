@@ -52,7 +52,7 @@ export interface SearchResponseData {
     code: number;
     message: string;
     ok: boolean;
-    searchResult: SearchResult;
+    result: SearchResult;
 }
 
 // 热搜项
@@ -71,6 +71,6 @@ export interface HotSearchResult {
 // 热搜响应数据
 export interface HotSearchResponseData {
     code: number;
-    hotSearchResult: HotSearchResult;
+    result: HotSearchResult;
 }
 

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reqSearch, reqSearchHot } from "@/api/search";
 import type{ SearchResult,SearchResponseData,HotSearchResponseData,HotSearchResult} from "@/api/search/type";
-export const useSearchStore = defineStore("search", {
+ const useSearchStore = defineStore("search", {
     state: () =>{
         return {
             searchList: <SearchResult>{},
@@ -12,13 +12,13 @@ export const useSearchStore = defineStore("search", {
         async getSearchList(keywords: string ,limit: number,offset: number){
             let result:SearchResponseData = await reqSearch(keywords,limit,offset);
             if(result.code === 200){
-                this.searchList = result.searchResult;
+                this.searchList = result.result;
             }
         },
         async getHotList(){
             let result:HotSearchResponseData = await reqSearchHot();
             if(result.code === 200){
-                this.hotList = result.hotSearchResult;
+                this.hotList = result.result;
             }
         }
     },
@@ -26,3 +26,4 @@ export const useSearchStore = defineStore("search", {
 
     }
 })
+export default useSearchStore

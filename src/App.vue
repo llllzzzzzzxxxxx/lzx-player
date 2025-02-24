@@ -38,10 +38,6 @@ document.addEventListener('visibilitychange', function () {
         }, 2000)
     }
 })
-
-
-
-
 // 定义一个响应式的背景图片路径
 const backgroundImage = ref(defaultBackground);
 
@@ -76,7 +72,7 @@ function changeBackground(newImagePath: string) {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(46, 46, 46, 0.2); // 黑色遮罩层，透明度为 0.5
+    background-color: rgba(46, 46, 46, 0.5); // 黑色遮罩层，透明度为 0.5
     backdrop-filter: blur(10px);
     z-index: -1; // 确保遮罩层在内容之下
 }
@@ -86,10 +82,8 @@ function changeBackground(newImagePath: string) {
     margin-bottom: 70px;
     width: 100%;
     height: 100%;
-    z-index: 1; // 确保内容在遮罩层之上
-    position: relative; // 确保内容相对于容器定位
-    background-color: rgba(255, 255, 255, 0.1); // 半透明白色背景，增强毛玻璃效果
-    backdrop-filter: blur(10px); // 内容区域的模糊效果
+    z-index: 1;
+    position: relative; // 确保内容相对于容器定位backdrop-filter: blur(10px); // 内容区域的模糊效果
     padding: 20px;
     border-radius: 10px; // 圆角效果
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 阴影效果
@@ -108,6 +102,7 @@ function changeBackground(newImagePath: string) {
 
     .page {
         grid-area: page;
+        max-height: calc(100vh - 400px);
         // background: green;
     }
 
