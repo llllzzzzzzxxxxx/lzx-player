@@ -22,7 +22,7 @@
             <span>专辑</span>
         </div>
         <div v-if="searchStore.searchList.songs?.length">
-            <div class="search-item" v-for="(item, index) in searchStore.searchList.songs" :key="item.id">
+            <div class="search-item" v-for="(item, index) in searchStore.searchList.songs" @click="playMusic(item.id)" :key="item.id">
                 <span class="index">{{ index + 1 }}</span>
                 <span class="name">{{ item.name }}</span>
                 <span class="artist">{{ item.artists[0].name }}</span>
@@ -54,12 +54,24 @@ import { onMounted } from 'vue';
 import type { HotSearchResponseData, HotSearchItem } from '@/api/search/type'
 // test
 import { reqSearchHot, reqSearch } from '@/api/search';
-
+import useMusicStore from '@/stores/modules/music';
 import useSearchStore from '@/stores/modules/search';
 
 let searchQuery = ref('');
 const hotList = ref<HotSearchItem[]>([]);
 const searchStore = useSearchStore();
+
+const playMusic = async (id: number) => {
+    const musicStore = useMusicStore();
+    await musicStore.getMusicUrl(id);
+    // 进度条归零
+    const audioPlayer = document.querySelector('audio') as HTMLAudioElement;
+    if (audioPlayer) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+        musicStore.musicState = true;
+    }
+}
 
 const getHotList = async () => {
     let result: HotSearchResponseData = await reqSearchHot();
@@ -234,7 +246,7 @@ button:hover {
 .no-search {
     justify-content: center;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15vh;
     color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
 }

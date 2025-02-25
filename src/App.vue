@@ -103,6 +103,7 @@ function changeBackground(newImagePath: string) {
     .page {
         grid-area: page;
         max-height: calc(100vh - 400px);
+        margin-left: 5vh;
         // background: green;
     }
 
