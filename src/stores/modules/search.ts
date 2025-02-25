@@ -11,7 +11,7 @@ import type{ SearchResult,SearchResponseData,HotSearchResponseData,HotSearchResu
     actions:{
         async getSearchList(keywords: string ,limit: number,offset: number){
             let result:SearchResponseData = await reqSearch(keywords,limit,offset);
-            if(result.code === 200){
+            if(result.code === 200&&result.result){
                 this.searchList = result.result;
             }
         },

@@ -8,7 +8,9 @@
             <div class="page">
                 <router-view></router-view>
             </div>
-            <div class="player">播放器</div>
+            <div class="player">
+                <Player />
+            </div>
         </div>
         <PlayerBottom />
     </div>

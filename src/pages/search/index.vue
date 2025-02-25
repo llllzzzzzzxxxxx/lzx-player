@@ -89,7 +89,7 @@ const handleSearch = async (keywords: string, limit: number, offset: number) => 
     let result = await reqSearch(keywords, limit, offset);
     if (result.code === 200) {
         searchStore.searchList = result.result;
-        console.log(searchStore.searchList);
+        // console.log(searchStore.searchList);
     }
 
 }
