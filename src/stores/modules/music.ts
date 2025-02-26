@@ -1,7 +1,13 @@
-import { defineStore } from "pinia";
 import { reqMusic,reqMusicDetail,reqMusicLyric } from "@/api/music";
 import type { AudioData, AudioResponse } from '@/api/music/type';
 import type { Song ,SongDetailResponse,LrcResponse } from '@/api/music/type';
+import { defineStore } from "pinia";
+// 定义播放顺序的枚举类型
+export enum PlaySequence {
+    Sequential = 0, // 顺序播放
+    Random = 1,     // 随机播放
+    Loop = 2        // 单曲循环
+}
 
 const useMusicStore = defineStore('music', {
     state: () => {
@@ -10,6 +16,7 @@ const useMusicStore = defineStore('music', {
             musicState: false,
             song: <Song>{},
             currentTime: '00:00',
+            sequence: PlaySequence.Sequential, // 使用枚举类型
             lyric: [] as { time: number; text: string }[], // 修改为存储解析后的歌词数组
         }
     },
@@ -57,6 +64,10 @@ const useMusicStore = defineStore('music', {
             });
 
             return lyricArray;
+        },
+        // 新增切换播放顺序的方法
+        toggleSequence() {
+            this.sequence = (this.sequence + 1) % 3;
         }
     },
     getters: {

@@ -7,15 +7,12 @@ import App from './App.vue'
 import PlayerTop from '@/components/player_top/index.vue'
 import PlayerBottom from '@/components/player_bottom/index.vue'
 import Login from '@/components/login/index.vue'
-import Nav from '@/components/nav/index.vue'
-import player from '@/components/player/index.vue'
-
+import Player from '@/components/player/index.vue'
 const app = createApp(App)
  app.component('PlayerTop', PlayerTop)
     .component('PlayerBottom', PlayerBottom)
     .component('Login', Login)
-    .component('Player',player)
-
+    .component('Player',Player)
 
 app.use(createPinia())
 app.use(router)

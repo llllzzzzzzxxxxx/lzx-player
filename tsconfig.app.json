@@ -7,6 +7,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vite/client", "webpack-env"],
+    "moduleResolution": "node",
+    "allowJs": true,
+    "jsx": "preserve"
   }
 }

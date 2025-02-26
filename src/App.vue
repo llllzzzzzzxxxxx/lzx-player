@@ -22,6 +22,7 @@ import PlayerTop from '@/components/player_top/index.vue';
 import PlayerBottom from '@/components/player_bottom/index.vue';
 import Login from '@/components/login/index.vue';
 import Nav from '@/components/nav/index.vue';
+import Player from '@/components/player/index.vue';
 // 导入图片资源
 import defaultBackground from '@/assets/background/bg-1.jpg'; // 根据实际情况修改路径
 

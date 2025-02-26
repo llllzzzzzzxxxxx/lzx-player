@@ -1,6 +1,6 @@
 <template>
-    <div>
-        推荐
+    <div class="top-list">
+        
     </div>
 </template>
 
@@ -8,6 +8,6 @@
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>
