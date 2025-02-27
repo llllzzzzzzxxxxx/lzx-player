@@ -23,7 +23,10 @@ const router = createRouter({
       path:'/historylist',
       component:()=>import('@/pages/historylist/index.vue')
     },
-    
+    {
+      path:'/comment',
+      component:()=>import('@/pages/comment/index.vue')
+    },
     {
       path: '/',
       redirect: '/playlist'

@@ -128,3 +128,112 @@ export interface LrcResponse {
     romalrc: LyricData; // 罗马音歌词数据
     code: number; // 响应状态码
 }
+
+//评论信息类型---------------
+// 用户 VIP 权限信息类型
+export interface VipRights {
+    associator: {
+        vipCode: number;
+        rights: boolean;
+        iconUrl: string;
+    } | null;
+    musicPackage: {
+        vipCode: number;
+        rights: boolean;
+        iconUrl: string;
+    } | null;
+    redplus: null;
+    redVipAnnualCount: number;
+    redVipLevel: number;
+    relationType: number;
+}
+
+// 用户信息类型
+export interface User {
+    locationInfo: null;
+    liveInfo: null;
+    anonym: number;
+    userType: number;
+    avatarDetail: {
+        userType: number;
+        identityLevel: number;
+        identityIconUrl: string;
+    } | null;
+    avatarUrl: string;
+    followed: boolean;
+    mutual: boolean;
+    remarkName: null | string;
+    socialUserId: null;
+    vipRights: VipRights;
+    nickname: string;
+    authStatus: number;
+    expertTags: null;
+    experts: null;
+    vipType: number;
+    commonIdentity: null;
+    userId: number;
+    target: null;
+}
+
+// 楼层评论展示信息类型
+export interface ShowFloorComment {
+    replyCount: number;
+    comments: null;
+    showReplyCount: boolean;
+}
+
+// 评论 IP 地址信息类型
+export interface IpLocation {
+    ip: null;
+    location: string;
+    userId: number;
+}
+
+// 挂件数据信息类型
+export interface PendantData {
+    id: number;
+    imageUrl: string;
+}
+
+// 评论信息类型
+export interface Comment {
+    user: User;
+    beReplied: any[];
+    pendantData: PendantData | null;
+    showFloorComment: ShowFloorComment;
+    status: number;
+    commentId: number;
+    content: string;
+    richContent: string | null;
+    contentResource: null;
+    time: number;
+    timeStr: string;
+    needDisplayTime: boolean;
+    likedCount: number;
+    expressionUrl: null;
+    commentLocationType: number;
+    parentCommentId: number;
+    decoration: {};
+    repliedMark: null;
+    grade: null;
+    userBizLevels: null;
+    ipLocation: IpLocation;
+    owner: boolean;
+    medal: null;
+    likeAnimationMap: {};
+    liked: boolean;
+}
+
+// 接口返回数据类型
+export interface CommentResponse {
+    isMusician: boolean;
+    userId: number;
+    topComments: any[];
+    moreHot: boolean;
+    hotComments: Comment[]|null;
+    commentBanner: null;
+    code: number;
+    comments: Comment[];
+    total: number;
+    more: boolean;
+}

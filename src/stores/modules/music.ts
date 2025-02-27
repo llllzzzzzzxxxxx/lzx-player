@@ -1,6 +1,6 @@
-import { reqMusic,reqMusicDetail,reqMusicLyric } from "@/api/music";
+import { reqMusic,reqMusicDetail,reqMusicLyric,reqMusicComment } from "@/api/music";
 import type { AudioData, AudioResponse } from '@/api/music/type';
-import type { Song ,SongDetailResponse,LrcResponse } from '@/api/music/type';
+import type { Song ,SongDetailResponse,LrcResponse,CommentResponse,Comment } from '@/api/music/type';
 import { defineStore } from "pinia";
 // 定义播放顺序的枚举类型
 export enum PlaySequence {
@@ -18,6 +18,9 @@ const useMusicStore = defineStore('music', {
             currentTime: '00:00',
             sequence: PlaySequence.Sequential, // 使用枚举类型
             lyric: [] as { time: number; text: string }[], // 修改为存储解析后的歌词数组
+            comments: <Comment[]>[],
+            hotComments: <Comment[]>[],
+            isLoadingComments: false
         }
     },
     actions: {
@@ -64,6 +67,28 @@ const useMusicStore = defineStore('music', {
             });
 
             return lyricArray;
+        },
+        //获取评论
+        async getComment(offset: number,limit: number,id: number) {
+            // 如果正在加载评论，则不进行新的请求
+            if (this.isLoadingComments) {
+                return;
+            }
+            this.isLoadingComments = true; // 设置为正在加载
+            try {
+                const result = await reqMusicComment(offset,limit,id) as CommentResponse
+                if (result.code == 200) {
+                    this.comments = [...this.comments, ...result.comments];
+                    if(result.hotComments){
+                        this.hotComments = [...this.hotComments, ...result.hotComments];
+                    }
+                }
+            } catch (error) {
+                alert('获取评论失败，请稍后重试');
+                console.error('获取评论失败:', error);
+            } finally {
+                this.isLoadingComments = false; // 请求完成，重置标志位
+            }
         },
         // 新增切换播放顺序的方法
         toggleSequence() {

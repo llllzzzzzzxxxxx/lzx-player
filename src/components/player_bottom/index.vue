@@ -60,7 +60,7 @@
                     </svg>
                 </span>
             </div>
-            <div class="comment">
+            <div class="comment" @click="showComment">
                 <svg t="1740473417857" class="icon" viewBox="0 0 1114 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="12552" width="32" height="32">
                     <path
@@ -113,14 +113,17 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue';
 import useMusicStore from '@/stores/modules/music';
-
+import { useRouter } from 'vue-router';
+import router from '@/router';
+let $router = useRouter();
 const musicStore = useMusicStore();
+
 const audioPlayer = ref<HTMLAudioElement | null>(null);
 let musicUrl = ref('');
 const progress = ref(0);
 const duration = ref('00:00');
-const volume = ref(0); // 新增音量控制
-const previousVolume = ref(0); // 存储之前的音量值
+const volume = ref(1); // 新增音量控制
+const previousVolume = ref(1); // 存储之前的音量值
 
 const togglePlay = () => {
     if(!musicUrl.value) return;
@@ -198,6 +201,20 @@ const volumeLevel = computed(() => {
         return 'max';
     }
 });
+const showComment = () => {
+    if(!musicStore.song.id) return;
+    if(musicStore.comments.length){
+        musicStore.comments = [];
+        musicStore.hotComments = [];
+        $router.go(-1);
+    }
+    $router.push({
+        path:'/comment',
+        query:{
+            id:musicStore.song.id
+        }
+    });
+}
 </script>
 
 <style scoped lang="scss">

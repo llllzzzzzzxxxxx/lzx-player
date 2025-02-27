@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { reqPersonalized, reqTopList, reqSongDetail, reqPlaylistDetail } from "@/api/toplist";
 import type { Playlist, ResultItem, Song } from "@/api/toplist/type";
+import usePlayListStore from './playlist'
 
 const useTopListStore = defineStore('toplist', {
     state: () => {
@@ -28,6 +29,8 @@ const useTopListStore = defineStore('toplist', {
             let result = await reqSongDetail(ids);
             if (result.code == 200) {
                 this.songs = result.songs
+                usePlayListStore().topListPlayList(this.songs);
+                console.log(this.songs);
             }
         },
         async getPlaylistDetail(id:number) {

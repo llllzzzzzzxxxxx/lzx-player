@@ -46,8 +46,8 @@
             <div>暂无搜索结果</div>
         </div>
     </div> -->
-    <div  v-if="searchStore.searchList.songs?.length">
-        <MusicPlaylist :musicList="usePlayListStore().songs" />
+    <div  v-if="usePlayListStore().SearchSongs?.length">
+        <MusicPlaylist :musicList="usePlayListStore().SearchSongs" />
     </div>
     <div v-else class="no-search">
             <div><svg t="1740401874319" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
