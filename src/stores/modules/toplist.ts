@@ -1,0 +1,45 @@
+import { defineStore } from "pinia";
+import { reqPersonalized, reqTopList, reqSongDetail, reqPlaylistDetail } from "@/api/toplist";
+import type { Playlist, ResultItem, Track } from "@/api/toplist/type";
+
+const useTopListStore = defineStore('toplist', {
+    state: () => {
+        return {
+            detailList: <ResultItem[]>[],//云音乐特色榜
+            topList: <Playlist[]>[],
+            playlist: [],
+            songs: <Track[]>[],
+        }
+    },
+    actions: {
+        async getPersonalized() {
+            let result = await reqPersonalized();
+            if (result.code == 200) {
+                this.detailList = result.result
+            }
+        },
+        async getTopList() {
+            let result = await reqTopList();
+            if (result.code == 200) {
+                this.topList = result.list
+            }
+        },
+        async getSongDetail(ids: string) {
+            let result = await reqSongDetail(ids);
+            if (result.code == 200) {
+                this.songs = result.songs
+            }
+        },
+        async getPlaylistDetail(id:number) {
+            let result = await reqPlaylistDetail(id);
+            if (result.code == 200) {
+                this.playlist = result.playlist
+            }
+        }
+    },
+    getters: {
+
+    }
+
+})
+export default useTopListStore

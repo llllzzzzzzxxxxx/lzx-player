@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reqSearch, reqSearchHot } from "@/api/search";
 import type{ SearchResult,SearchResponseData,HotSearchResponseData,HotSearchResult} from "@/api/search/type";
- const useSearchStore = defineStore("search", {
+const useSearchStore = defineStore("search", {
     state: () =>{
         return {
             searchList: <SearchResult>{},
