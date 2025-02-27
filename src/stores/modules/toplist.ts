@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { reqPersonalized, reqTopList, reqSongDetail, reqPlaylistDetail } from "@/api/toplist";
-import type { Playlist, ResultItem, Track } from "@/api/toplist/type";
+import type { Playlist, ResultItem, Song } from "@/api/toplist/type";
 
 const useTopListStore = defineStore('toplist', {
     state: () => {
@@ -8,7 +8,7 @@ const useTopListStore = defineStore('toplist', {
             detailList: <ResultItem[]>[],//云音乐特色榜
             topList: <Playlist[]>[],
             playlist: [],
-            songs: <Track[]>[],
+            songs: <Song[]>[],
         }
     },
     actions: {
@@ -35,6 +35,8 @@ const useTopListStore = defineStore('toplist', {
             if (result.code == 200) {
                 this.playlist = result.playlist
             }
+            let ids = result.playlist.trackIds.map((item: any) => item.id).join(',');
+            this.getSongDetail(ids);
         }
     },
     getters: {

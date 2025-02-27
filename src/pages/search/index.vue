@@ -47,7 +47,7 @@
         </div>
     </div> -->
     <div  v-if="searchStore.searchList.songs?.length">
-        <MusicPlaylist :musicList="searchStore.searchList.songs" />
+        <MusicPlaylist :musicList="usePlayListStore().songs" />
     </div>
     <div v-else class="no-search">
             <div><svg t="1740401874319" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -71,13 +71,14 @@ import { ref } from 'vue';
 import { onMounted } from 'vue';
 import type { HotSearchResponseData, HotSearchItem } from '@/api/search/type'
 import { reqSearchHot, reqSearch } from '@/api/search';
+import type { PlayListSongs } from '@/api/playlist/type';
 import useMusicStore from '@/stores/modules/music';
 import useSearchStore from '@/stores/modules/search';
+import usePlayListStore from '@/stores/modules/playlist';
 import MusicPlaylist from '@/components/play_list/index.vue';
 let searchQuery = ref('');
 const hotList = ref<HotSearchItem[]>([]);
 const searchStore = useSearchStore();
-
 const getHotList = async () => {
     let result: HotSearchResponseData = await reqSearchHot();
     if (result && result.result) {
@@ -91,10 +92,8 @@ const searchhots = (item: HotSearchItem) => {
     handleSearch(item.first, 30, 0);
 }
 const handleSearch = async (keywords: string, limit: number, offset: number) => {
-    let result = await reqSearch(keywords, limit, offset);
-    if (result.code === 200) {
-        searchStore.searchList = result.result;
-    }
+    searchStore.getSearchList(keywords, limit, offset);
+    
 }
 onMounted(async () => {
     getHotList();

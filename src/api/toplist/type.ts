@@ -94,7 +94,7 @@ export type Album = {
     pic: number;             // Picture ID
 };
 
-export type Track = {
+export type Song = {
     name: string;            // Track name
     id: number;              // Track ID
     pst: number;             // Post status
@@ -213,7 +213,7 @@ export type Privilege = {
 };
 
 export type SongDetailResponseData = {
-    songs: Track[];          // Array of songs
+    songs: Song[];          // Array of songs
     privileges: Privilege[]; // Array of privileges
     code: number;            // Response code
 };
