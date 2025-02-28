@@ -6,6 +6,7 @@ const usePlayListStore = defineStore('playlist', {
     state: () => ({
         SearchSongs: <PlayListSongs[]>[],
         topListSongs: <PlayListSongs[]>[],
+        UserListSong: <PlayListSongs[]>[],
     }),
     actions: {
         searchPlayList(SearchResponseData: SearchResponseData){
@@ -19,6 +20,15 @@ const usePlayListStore = defineStore('playlist', {
         },
         topListPlayList(songs: Song[]) {
             this.topListSongs = songs.map(song => ({
+                id: song.id,
+                name: song.name,
+                artists: song.ar.map(artist => artist.name).join(', '),
+                album: song.al.name,
+                picUrl: song.al.picUrl || '' // 防止 picUrl 为 undefined
+            }));
+        },
+        userPlayList(songs: Song[]){
+            this.UserListSong = songs.map(song => ({
                 id: song.id,
                 name: song.name,
                 artists: song.ar.map(artist => artist.name).join(', '),

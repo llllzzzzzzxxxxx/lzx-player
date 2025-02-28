@@ -3,12 +3,44 @@
         <div class="left">
             <p class="title">musicPlayer</p>
         </div>
-        <div class="right">登录</div>
+        
+        <div v-if="useUserStore().hasLogin&&user" class="right">
+            <img :src="user.avatarUrl" alt="">
+            <span>{{ user.nickname }}</span>
+            <span class="exit" @click="logOut">退出</span>
+        </div>
+        <div v-else class="right" @click="loginPage">登录</div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+import Login from '@/components/login/index.vue';
+import useUserStore from '@/stores/modules/user';
+import type { Profile } from "@/api/login/type";
 
+let user = ref<Profile>();
+const loginPage = () => {
+    useUserStore().isLogin= true;
+}
+const logOut = () => {
+    useUserStore().logout;
+    useUserStore().hasLogin = false;
+    getUser();
+    
+}
+watch(() => useUserStore().hasLogin, (newUser) => {
+    getUser();
+})
+const getUser = ()=>{
+    let storedUser = localStorage.getItem('user');
+    if (storedUser) {
+        user.value = JSON.parse(storedUser);
+    }
+}
+onMounted(() => {
+    getUser
+})
 </script>
 
 <style scoped lang="scss">
@@ -37,7 +69,17 @@
         align-items: center;
         font-size: 16px;
         margin-right: 20px;
+        cursor: pointer;
+        img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        span{
+            font-size: 14px;
+            margin-right: 2px;
+        }
     }
 }
-
 </style>

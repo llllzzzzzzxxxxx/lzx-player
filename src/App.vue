@@ -13,6 +13,7 @@
             </div>
         </div>
         <PlayerBottom />
+        <Login />
     </div>
 </template>
 
