@@ -39,7 +39,7 @@ const handleLogin = () => {
   if (!isNaN(uidNumber)) { // 检查是否为有效数字
     try {
       userStore.getUserData(uidNumber);
-      userStore.hasLogin = true;
+      userStore.hasChange = !userStore.hasChange;
     } catch (error) {
       
     }

@@ -7,7 +7,7 @@ import usePlayListStore from "./playlist";
 const useUserStore = defineStore('user', {
     state:()=>{
         return{
-            hasLogin:false,
+            hasChange:true,
             isLogin:false,
             isHelp:false,
             userPlaylist:<userPlaylist[]>[],
@@ -18,7 +18,7 @@ const useUserStore = defineStore('user', {
             let result = await reqLogin(uid);
             if (result.code == 200) {
                 localStorage.setItem('user',JSON.stringify(result.profile));
-                this.hasLogin = true;
+                this.hasChange = true;
             }
         },
         //获取歌单
@@ -40,7 +40,7 @@ const useUserStore = defineStore('user', {
         logout() {
             localStorage.removeItem('user');
             this.isLogin = false;
-            this.hasLogin = false;
+            this.hasChange = false;
             this.userPlaylist = [];
         },
     },

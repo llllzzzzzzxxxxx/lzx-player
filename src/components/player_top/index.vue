@@ -4,7 +4,7 @@
             <p class="title">musicPlayer</p>
         </div>
         
-        <div v-if="useUserStore().hasLogin&&user" class="right">
+        <div v-if="user" class="right">
             <img :src="user.avatarUrl" alt="">
             <span>{{ user.nickname }}</span>
             <span class="exit" @click="logOut">退出</span>
@@ -24,12 +24,12 @@ const loginPage = () => {
     useUserStore().isLogin= true;
 }
 const logOut = () => {
-    useUserStore().logout;
-    useUserStore().hasLogin = false;
+    useUserStore().logout();
     getUser();
-    
+    useUserStore().hasChange=!useUserStore().hasChange;
+    user.value = undefined;
 }
-watch(() => useUserStore().hasLogin, (newUser) => {
+watch(() => useUserStore().hasChange, (newUser) => {
     getUser();
 })
 const getUser = ()=>{
@@ -39,7 +39,7 @@ const getUser = ()=>{
     }
 }
 onMounted(() => {
-    getUser
+    getUser();
 })
 </script>
 
