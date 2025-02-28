@@ -10,6 +10,7 @@ const useTopListStore = defineStore('toplist', {
             topList: <Playlist[]>[],
             playlist: [],
             songs: <Song[]>[],
+            isLoading: false,
         }
     },
     actions: {
@@ -26,11 +27,13 @@ const useTopListStore = defineStore('toplist', {
             }
         },
         async getSongDetail(ids: string) {
+            this.isLoading = true
             let result = await reqSongDetail(ids);
             if (result.code == 200) {
                 this.songs = result.songs
                 usePlayListStore().topListPlayList(this.songs);
                 console.log(this.songs);
+                this.isLoading = false
             }
         },
         async getPlaylistDetail(id:number) {

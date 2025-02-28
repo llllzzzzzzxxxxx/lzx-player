@@ -78,7 +78,7 @@ onMounted(() => {
         }
         span{
             font-size: 14px;
-            margin-right: 2px;
+            margin-right: 10px;
         }
     }
 }

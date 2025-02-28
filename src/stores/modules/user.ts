@@ -7,7 +7,9 @@ import usePlayListStore from "./playlist";
 const useUserStore = defineStore('user', {
     state:()=>{
         return{
+            userinfo:<Profile>{},
             hasChange:true,
+            isLoading:false,
             isLogin:false,
             isHelp:false,
             userPlaylist:<userPlaylist[]>[],
@@ -30,11 +32,20 @@ const useUserStore = defineStore('user', {
         },
         //获取歌单详情
         async getUserPlaylist(uid:number) {
+                this.isLoading = true;
             let result = await reqPlaylistDetail(uid);
             if (result.code == 200) {
                 let ids = result.playlist.trackIds.map((item: any) => item.id).join(',');
                 let songsResult = await reqSongDetail(ids);
                 usePlayListStore().userPlayList(songsResult.songs);
+                this.isLoading = false;
+            }
+        },
+        getUser(){
+            let user = localStorage.getItem('user');
+            if(user){
+                this.userinfo = JSON.parse(user);
+                console.log("userInfo"+this.userinfo.userId);
             }
         },
         logout() {
