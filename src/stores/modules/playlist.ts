@@ -3,7 +3,7 @@ import type { PlayListSongs } from '@/api/playlist/type';
 import type { AudioData, AudioResponse } from '@/api/music/type';
 import type { Song } from "@/api/toplist/type";
 import type { SearchResponseData } from '@/api/search/type';
-import useMusicStore from "./music";
+import useMusicStore,{PlaySequence} from "./music";
 const usePlayListStore = defineStore('playlist', {
     state: () => ({
         SearchSongs: <PlayListSongs[]>[],
@@ -11,7 +11,7 @@ const usePlayListStore = defineStore('playlist', {
         UserListSong: <PlayListSongs[]>[],
         PlayingSong: <PlayListSongs[]>[],
         HistorySong: <PlayListSongs[]>[],
-        playingIndex: 0
+        playingIndex: 0,
     }),
     actions: {
         searchPlayList(SearchResponseData: SearchResponseData) {
@@ -72,27 +72,62 @@ const usePlayListStore = defineStore('playlist', {
             this.PlayingSong = [];
             localStorage.removeItem('PlayingSong');
         },
-        playPreviousSong() {
-            if (this.PlayingSong.length === 0) return; // 如果没有歌曲，直接返回
-
-            const currentIndex = this.PlayingSong.findIndex(song => this.playingIndex === song.id); // 找到当前播放的歌曲
-            if (currentIndex === -1) return; // 如果没有正在播放的歌曲，直接返回
-
-            const previousIndex = (currentIndex - 1 + this.PlayingSong.length) % this.PlayingSong.length; // 计算上一首的索引
-            this.playingIndex = this.PlayingSong[previousIndex].id;
-            return this.PlayingSong[previousIndex];
-        },
-
         playNextSong() {
             if (this.PlayingSong.length === 0) return; // 如果没有歌曲，直接返回
-            console.log("next" + this.PlayingSong);
-            const currentIndex = this.PlayingSong.findIndex(song => this.playingIndex === song.id); // 找到当前播放的歌曲
+        
+            const currentIndex = this.PlayingSong.findIndex(song => this.playingIndex === song.id);
             if (currentIndex === -1) return; // 如果没有正在播放的歌曲，直接返回
-
-            const nextIndex = (currentIndex + 1) % this.PlayingSong.length; // 计算下一首的索引
+        
+            const musicStore = useMusicStore(); // 获取 musicStore
+            const sequence = musicStore.sequence; // 获取当前播放模式
+        
+            let nextIndex;
+            switch (sequence) {
+              case PlaySequence.Sequential: // 顺序播放
+                nextIndex = (currentIndex + 1) % this.PlayingSong.length;
+                break;
+              case PlaySequence.Random: // 随机播放
+                nextIndex = Math.floor(Math.random() * this.PlayingSong.length);
+                break;
+              case PlaySequence.Loop: // 单曲循环
+                nextIndex = currentIndex;
+                break;
+              default:
+                nextIndex = (currentIndex + 1) % this.PlayingSong.length;
+            }
+            console.log(nextIndex);
             this.playingIndex = this.PlayingSong[nextIndex].id;
             return this.PlayingSong[nextIndex];
-        },
+          },
+        
+          // 播放上一首
+          playPreviousSong() {
+            if (this.PlayingSong.length === 0) return; // 如果没有歌曲，直接返回
+        
+            const currentIndex = this.PlayingSong.findIndex(song => this.playingIndex === song.id);
+            if (currentIndex === -1) return; // 如果没有正在播放的歌曲，直接返回
+        
+            const musicStore = useMusicStore(); // 获取 musicStore
+            const sequence = musicStore.sequence; // 获取当前播放模式
+        
+            let previousIndex;
+            switch (sequence) {
+              case PlaySequence.Sequential: // 顺序播放
+                previousIndex = (currentIndex - 1 + this.PlayingSong.length) % this.PlayingSong.length;
+                break;
+              case PlaySequence.Random: // 随机播放
+                previousIndex = Math.floor(Math.random() * this.PlayingSong.length);
+                break;
+              case PlaySequence.Loop: // 单曲循环
+                previousIndex = currentIndex;
+                break;
+              default:
+                previousIndex = (currentIndex - 1 + this.PlayingSong.length) % this.PlayingSong.length;
+            }
+        
+            this.playingIndex = this.PlayingSong[previousIndex].id;
+            return this.PlayingSong[previousIndex];
+          },
         
     },
     getters: {
