@@ -3,4 +3,5 @@ export interface PlayListSongs{
     id:number
     artists:string
     album:string
+    // isPlaying:boolean
 }

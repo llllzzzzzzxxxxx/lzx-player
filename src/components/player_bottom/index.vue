@@ -1,7 +1,7 @@
 <template>
     <div class="bottom">
         <div class="left">
-            <div class="last">
+            <div class="last" @click="lastMusic">
                 <svg t="1740403359449" class="icon" viewBox="0 0 1024 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="3008" width="48" height="48">
                     <path
@@ -10,7 +10,7 @@
                 </svg>
             </div>
             <div class="play" @click="togglePlay">
-                <Audio :src="musicUrl" ref="audioPlayer"></Audio>
+                <Audio :src="musicUrl" ref="audioPlayer" @end="nextMusic"></Audio>
                 <span v-if="!musicStore.musicState">
                     <svg t="1740541849162" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5904" width="32" height="32"><path d="M128 138.666667c0-47.232 33.322667-66.666667 74.176-43.562667l663.146667 374.954667c40.96 23.168 40.853333 60.8 0 83.882666L202.176 928.896C161.216 952.064 128 932.565333 128 885.333333v-746.666666z" fill="#bfbfbf" p-id="5905"></path></svg>
                 </span>
@@ -18,7 +18,7 @@
                     <svg t="1740541886832" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6210" width="32" height="32"><path d="M128 106.858667C128 94.976 137.621333 85.333333 149.12 85.333333h85.76c11.648 0 21.12 9.6 21.12 21.525334V917.12c0 11.882667-9.621333 21.525333-21.12 21.525333H149.12A21.290667 21.290667 0 0 1 128 917.141333V106.88z m640 0c0-11.882667 9.621333-21.525333 21.12-21.525334h85.76c11.648 0 21.12 9.6 21.12 21.525334V917.12c0 11.882667-9.621333 21.525333-21.12 21.525333h-85.76a21.290667 21.290667 0 0 1-21.12-21.525333V106.88z" fill="#bfbfbf" p-id="6211"></path></svg>
                 </span>
             </div>
-            <div class="next">
+            <div class="next" @click="nextMusic">
                 <svg t="1740403378507" class="icon" viewBox="0 0 1024 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="3330" width="48" height="48">
                     <path
@@ -114,17 +114,40 @@
 import { ref, watch, onMounted, computed } from 'vue';
 import useMusicStore from '@/stores/modules/music';
 import { useRouter } from 'vue-router';
+import type { PlayListSongs } from '@/api/playlist/type';
 import router from '@/router';
+import usePlayListStore from '@/stores/modules/playlist';
 let $router = useRouter();
 const musicStore = useMusicStore();
-
+const playListStore = usePlayListStore();
 const audioPlayer = ref<HTMLAudioElement | null>(null);
 let musicUrl = ref('');
 const progress = ref(0);
 const duration = ref('00:00');
 const volume = ref(1); // 新增音量控制
 const previousVolume = ref(1); // 存储之前的音量值
-
+const lastMusic = () => {
+    let lastMusic = playListStore.playPreviousSong();
+    if(!lastMusic)return;
+    playMusic(lastMusic);
+}
+const nextMusic = () => {
+    let nextMusic = playListStore.playNextSong();
+    if(!nextMusic)return;
+    playMusic(nextMusic);
+};
+const playMusic = async (item: PlayListSongs) => {
+    const musicStore = useMusicStore();
+    await musicStore.getMusicUrl(item.id);
+    playListStore.addPlayingSong(item);
+    const audioPlayer = document.querySelector('audio') as HTMLAudioElement;
+    if (audioPlayer) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+        musicStore.musicState = true;
+        playListStore.addHistorySong(item);
+    }
+};
 const togglePlay = () => {
     if(!musicUrl.value) return;
     if (audioPlayer.value) {

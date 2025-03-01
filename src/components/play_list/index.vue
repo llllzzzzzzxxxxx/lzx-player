@@ -7,9 +7,14 @@
       <span>专辑</span>
     </div>
     <div v-if="musicList.length">
-      <div class="playlist-item" v-for="(item, index) in musicList" :key="item.id" @click="playMusic(item.id)">
+      <div class="playlist-item"
+       v-for="(item, index) in musicList" 
+       :key="item.id" 
+       @click="playMusic(item)"
+       :class="{ 'playing' :item.id===playListStore.playingIndex }"
+       >
         <span class="index">{{ index + 1 }}</span>
-        <span class="name">{{ item.name }}</span>
+        <span class="name" >{{ item.name }}</span>
         <span class="artist">{{ item.artists }}</span>
         <span class="type">
           {{ item.album.length > 5 ? item.album.slice(0, 5) + '...' : item.album }}
@@ -23,6 +28,7 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import useMusicStore from '@/stores/modules/music';
+import usePlayListStore from '@/stores/modules/playlist'
 // import type { Song } from '@/api/search/type';
 import type { PlayListSongs } from '@/api/playlist/type';
 const props = defineProps({
@@ -31,15 +37,19 @@ const props = defineProps({
     required: true,
   },
 });
-const playMusic = async (id: number) => {
+const playListStore = usePlayListStore();
+const playMusic = async (item: PlayListSongs) => {
   const musicStore = useMusicStore();
-  await musicStore.getMusicUrl(id);
+  await musicStore.getMusicUrl(item.id);
+  playListStore.playingIndex=item.id;
+  playListStore.addPlayingSong(item);
   // 进度条归零
   const audioPlayer = document.querySelector('audio') as HTMLAudioElement;
   if (audioPlayer) {
     audioPlayer.currentTime = 0;
     audioPlayer.play();
     musicStore.musicState = true;
+    playListStore.addHistorySong(item);
   }
 }
 </script>
@@ -52,7 +62,16 @@ const playMusic = async (id: number) => {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #888 #333;
+  .playing{
+      color: #fff;
+    .index{
+      width: 10px;
+      height: 10px;
+      // font-size: 0;
+      background: url('@/assets/wave.gif') no-repeat 50% ;
+    }
 
+  }
   &::-webkit-scrollbar {
     width: 10px;
   }

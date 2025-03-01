@@ -1,5 +1,6 @@
 import { reqMusic,reqMusicDetail,reqMusicLyric,reqMusicComment } from "@/api/music";
 import type { AudioData, AudioResponse } from '@/api/music/type';
+import usePlayListStore from "./playlist";
 import type { Song ,SongDetailResponse,LrcResponse,CommentResponse,Comment } from '@/api/music/type';
 import { defineStore } from "pinia";
 // 定义播放顺序的枚举类型
@@ -28,7 +29,7 @@ const useMusicStore = defineStore('music', {
             const result = await reqMusic(id) as AudioResponse
             if (result.code == 200&&result.data[0].code===200) {
                 this.musicUrl = result.data[0].url
-                this.getMusicDetail(id)
+                this.getMusicDetail(id);
                 return Promise.resolve(this.musicUrl);
             }else{
                 alert('获取音乐url失败,请登录后重试')
@@ -41,7 +42,7 @@ const useMusicStore = defineStore('music', {
                 this.song = result.songs[0]
                 const lyricResult = await reqMusicLyric(ids) as LrcResponse
                 this.lyric = this.parseLyric(lyricResult.lrc.lyric); // 解析歌词
-                console.log("解析后的歌词", this.lyric);
+                // console.log("解析后的歌词", this.lyric);
                 
                 return Promise.resolve(this.song);
             }else{
@@ -93,7 +94,8 @@ const useMusicStore = defineStore('music', {
         // 新增切换播放顺序的方法
         toggleSequence() {
             this.sequence = (this.sequence + 1) % 3;
-        }
+        },
+        
     },
     getters: {
     }
