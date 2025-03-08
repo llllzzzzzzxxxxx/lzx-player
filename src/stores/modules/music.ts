@@ -40,24 +40,6 @@ const useMusicStore = defineStore('music', {
                 alert('获取音乐url失败,请登录后重试')
                 return Promise.reject(new Error('获取音乐url失败'));
             }
-
-            // (async () => {
-            //     const browser = await puppeteer.launch();
-            //     const page = await browser.newPage();
-            //     await page.goto(`https://www.byfuns.top/api/1/?id=${id}`);
-            //     const content = await page.content();
-            //     this.musicUrl = content;
-            //     console.log(content);
-            //     await browser.close();
-            // })();
-            // if (result.code == 200&&result.data[0].code===200) {
-            //     this.musicUrl = result.data[0].url
-            //     this.getMusicDetail(id);
-            //     return Promise.resolve(this.musicUrl);
-            // }else{
-            //     alert('获取音乐url失败,请登录后重试')
-            //     return Promise.reject(new Error('获取音乐url失败'));
-            // }
         },
         async getMusicDetail(ids: number) {
             const result = await reqMusicDetail(ids) as SongDetailResponse
