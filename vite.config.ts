@@ -12,6 +12,7 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
   ],
+  base: '/lzx-player/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
