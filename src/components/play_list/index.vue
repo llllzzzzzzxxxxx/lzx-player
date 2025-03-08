@@ -30,7 +30,10 @@ import type { PropType } from 'vue';
 import useMusicStore from '@/stores/modules/music';
 import usePlayListStore from '@/stores/modules/playlist'
 // import type { Song } from '@/api/search/type';
+import type { AudioResponse } from '@/api/music/type';
 import type { PlayListSongs } from '@/api/playlist/type';
+import axios from 'axios';
+
 const props = defineProps({
   musicList: {
     type: Array as PropType<PlayListSongs[]>,
@@ -41,6 +44,7 @@ const playListStore = usePlayListStore();
 const playMusic = async (item: PlayListSongs) => {
   const musicStore = useMusicStore();
   await musicStore.getMusicUrl(item.id);
+  // await axios.get(`https://www.byfuns.top/api/1?id=${id}`) as AudioResponse
   playListStore.playingIndex=item.id;
   playListStore.addPlayingSong(item);
   // 进度条归零

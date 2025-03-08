@@ -20,7 +20,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api': {
-        target: 'http://47.238.84.228:3000',
+        target: 'https://www.byfuns.top',
         changeOrigin: true,
       },
     }
