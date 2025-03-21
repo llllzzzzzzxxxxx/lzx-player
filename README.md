@@ -1,39 +1,13 @@
 # lzxPlayer
+自主开发音乐播放器，集成Vue3、TypeScript等技术，打造功能完备、界面友好的音乐平台。
 
-This template should help get you started developing with Vue 3 in Vite.
+本项目使用了网易云音乐的[第三方 API 服务](https://github.com/GuihongWang/NeteaseCloudMusicApi)，对于该第三方 API 服务造成的任何问题，本项目开发者不承担责任。
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
- 
-## Type Support for `.vue` Imports in TS 
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-pnpm test:unit
-```
+## 技术栈
+- vite Vue脚手架工具
+- Vue3 核心框架
+- Vue Router 页面路由
+- Pinia 状态管理
+- ES6 （JavaScript 语言的下一代标准）
+- Scss（CSS 预处理器）
+- Axios（网络请求）
