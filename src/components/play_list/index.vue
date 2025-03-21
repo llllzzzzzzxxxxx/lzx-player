@@ -98,6 +98,7 @@ const playMusic = async (item: PlayListSongs) => {
   display: flex;
 
   span {
+    padding-top: 5px;
     flex: 1;
   }
 }
